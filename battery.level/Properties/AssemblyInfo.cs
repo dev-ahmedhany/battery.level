@@ -9,7 +9,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("battery.level")]
 [assembly: AssemblyDescription("Showing Battery level as Icon")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Ahmed HAny")]
+[assembly: AssemblyCompany("Ahmed Hany")]
 [assembly: AssemblyProduct("battery.level")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("Ahmed4Apps")]
