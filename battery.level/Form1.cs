@@ -21,7 +21,8 @@ namespace battery.level
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            string[] lines = File.ReadAllLines(Application.StartupPath + @"\BatteryLevelLog.txt");
+            
+            string[] lines = File.ReadAllLines(TrayIcon.logpath);
             int j = 0;
             TimeSpan x = new TimeSpan();
             DateTime y = new DateTime();

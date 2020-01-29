@@ -37,8 +37,8 @@
             // 
             // chart1
             // 
-            chartArea1.AxisX.Minimum = 0;
-            chartArea1.AxisY.Maximum = 100;
+            chartArea1.AxisX.Minimum = 0D;
+            chartArea1.AxisY.Maximum = 100D;
             chartArea1.Name = "ChartArea1";
             this.chart1.ChartAreas.Add(chartArea1);
             this.chart1.Dock = System.Windows.Forms.DockStyle.Fill;
@@ -51,7 +51,7 @@
             series1.Legend = "Legend1";
             series1.Name = "season0";
             this.chart1.Series.Add(series1);
-            this.chart1.Size = new System.Drawing.Size(784, 561);
+            this.chart1.Size = new System.Drawing.Size(800, 450);
             this.chart1.TabIndex = 0;
             this.chart1.Text = "chart1";
             // 
@@ -63,6 +63,7 @@
             this.Controls.Add(this.chart1);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
             ((System.ComponentModel.ISupportInitialize)(this.chart1)).EndInit();
             this.ResumeLayout(false);
 

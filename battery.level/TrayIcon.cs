@@ -3,6 +3,7 @@ using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.IO;
+using Microsoft.Win32;
 
 namespace battery.level
 {
@@ -10,6 +11,7 @@ namespace battery.level
     {
         private int oldPercentage;
         private NotifyIcon notifyIcon;
+        public static string logpath = System.Environment.GetFolderPath(System.Environment.SpecialFolder.LocalApplicationData) + @"\BatteryLevelLog.txt";
         public TrayIcon()
         {
             ContextMenu contextMenu = new ContextMenu();
@@ -27,9 +29,17 @@ namespace battery.level
             menuItemStartup.Index = 2;
             menuItemStartup.Text = "Run at Startup";
             menuItemStartup.Click += new EventHandler(menuItemStartup_Click);
+
+            RegistryKey rk = Registry.CurrentUser.OpenSubKey
+                ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+            if (rk.GetValue(Application.ProductName) != null)
+                menuItemStartup.Checked = true;
+            else
+                menuItemStartup.Checked = false;
+
             notifyIcon.ContextMenu = contextMenu;
             notifyIcon.Visible = true;
-            File.AppendAllText(Application.StartupPath + @"\BatteryLevelLog.txt", "" + Environment.NewLine);
+            File.AppendAllText(logpath, "" + Environment.NewLine);
             //timer
             Timer timer = new Timer();
             timer.Tick += new EventHandler(timer_Tick);
@@ -63,7 +73,7 @@ namespace battery.level
                 System.IntPtr intPtr = image.GetHicon();
                 notifyIcon.Icon = Icon.FromHandle(intPtr);
 
-                File.AppendAllText(Application.StartupPath + @"\BatteryLevelLog.txt", batteryPercentage.ToString() + "\t" + DateTime.Now.ToShortTimeString() + "\t" + DateTime.Now.ToShortDateString() + Environment.NewLine);
+                File.AppendAllText(logpath, batteryPercentage.ToString() + "\t" + DateTime.Now.ToShortTimeString() + "\t" + DateTime.Now.ToShortDateString() + Environment.NewLine);
             }
         }
         private void menuItem_Click(object sender, EventArgs e)
@@ -81,14 +91,12 @@ namespace battery.level
         {
             MenuItem m = (MenuItem)sender;
             m.Checked = !m.Checked;
-            if (m.Checked)
-            {
-
-            }
-            else
-            {
-
-            }
+                RegistryKey rk = Registry.CurrentUser.OpenSubKey
+                    ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
+                if (m.Checked)
+                    rk.SetValue(Application.ProductName, Application.ExecutablePath);
+                else
+                    rk.DeleteValue(Application.ProductName, false);
         }
     }
 }
