@@ -32,8 +32,10 @@ namespace battery.level
 
             RegistryKey rk = Registry.CurrentUser.OpenSubKey
                 ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
-            if (rk.GetValue(Application.ProductName) != null)
+            if (rk.GetValue(Application.ProductName) != null && rk.GetValue(Application.ProductName).ToString() == Application.ExecutablePath)
+            {
                 menuItemStartup.Checked = true;
+            }
             else
                 menuItemStartup.Checked = false;
 
