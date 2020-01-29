@@ -3,3 +3,5 @@
 ################################################################################
 
 /.vs
+/battery.level/.vs/battery.level/v16
+/battery.level/obj/Debug
