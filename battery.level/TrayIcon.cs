@@ -15,10 +15,10 @@ namespace battery.level
         public TrayIcon()
         {
             ContextMenu contextMenu = new ContextMenu();
-            MenuItem menuItemExit = new MenuItem(), menuItemStartup = new MenuItem(), menuItemHistory = new MenuItem();
+            MenuItem menuItemExit = new MenuItem(), menuItemStartup = new MenuItem(), menuItemHistory = new MenuItem(), menuItemLog = new MenuItem();
             notifyIcon = new NotifyIcon();
             // initialize contextMenu
-            contextMenu.MenuItems.AddRange(new MenuItem[] { menuItemExit, menuItemHistory, menuItemStartup });
+            contextMenu.MenuItems.AddRange(new MenuItem[] { menuItemExit, menuItemHistory, menuItemStartup, menuItemLog });
             // initialize menuItem
             menuItemExit.Index = 0;
             menuItemExit.Text = "Exit";
@@ -29,6 +29,9 @@ namespace battery.level
             menuItemStartup.Index = 2;
             menuItemStartup.Text = "Run at Startup";
             menuItemStartup.Click += new EventHandler(menuItemStartup_Click);
+            menuItemLog.Index = 3;
+            menuItemLog.Text = "Log";
+            menuItemLog.Click += new EventHandler(MenuItemLog_Click);
 
             RegistryKey rk = Registry.CurrentUser.OpenSubKey
                 ("SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\Run", true);
@@ -48,6 +51,12 @@ namespace battery.level
             timer.Interval = 1000; // in miliseconds
             timer.Start();
         }
+
+        private void MenuItemLog_Click(object sender, EventArgs e)
+        {
+            System.Diagnostics.Process.Start(logpath);
+        }
+
         private void timer_Tick(object sender, EventArgs e)
         {
             PowerStatus powerStatus = SystemInformation.PowerStatus;
