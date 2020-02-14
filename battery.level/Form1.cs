@@ -27,6 +27,7 @@ namespace battery.level
             TimeSpan x = new TimeSpan();
             DateTime y = new DateTime();
             bool a = true;
+
             for (int i = 0; i < lines.Length; i++)
             {
                 if (lines[i] == "")
@@ -54,6 +55,27 @@ namespace battery.level
                     chart1.Series[j].Points.AddXY(x.TotalMinutes, text[0]);
 
                 }
+            }
+            int final = Convert.ToInt32(x.TotalMinutes);
+            if (final > 1000)
+            {
+                foreach (var series in chart1.Series)
+                {
+                    for (int i = 0; i < series.Points.Count; i++)
+                    {
+                        if(final - series.Points[i].XValue > 1000)
+                        {
+                            series.Points.RemoveAt(i);
+                            i--;
+                            
+                        }
+                        else
+                        {
+                            series.Points[i].XValue = series.Points[i].XValue + 1000 - final;
+                        }
+                    }
+                }
+                chart1.Update();
             }
 
         }
