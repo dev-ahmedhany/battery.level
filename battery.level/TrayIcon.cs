@@ -44,12 +44,19 @@ namespace battery.level
 
             notifyIcon.ContextMenu = contextMenu;
             notifyIcon.Visible = true;
+            notifyIcon.DoubleClick += NotifyIcon_DoubleClick;
             File.AppendAllText(logpath, "" + Environment.NewLine);
             //timer
             Timer timer = new Timer();
             timer.Tick += new EventHandler(timer_Tick);
             timer.Interval = 1000; // in miliseconds
             timer.Start();
+        }
+
+        private void NotifyIcon_DoubleClick(object sender, EventArgs e)
+        {
+            Form1 frm = new Form1();
+            frm.Show();
         }
 
         private void MenuItemLog_Click(object sender, EventArgs e)
@@ -85,6 +92,25 @@ namespace battery.level
                 notifyIcon.Icon = Icon.FromHandle(intPtr);
 
                 File.AppendAllText(logpath, batteryPercentage.ToString() + "\t" + DateTime.Now.ToShortTimeString() + "\t" + DateTime.Now.ToShortDateString() + Environment.NewLine);
+
+                if(batteryPercentage >= 80)
+                {
+                    if(powerStatus.PowerLineStatus == PowerLineStatus.Online)
+                    {
+                        notifyIcon.BalloonTipText = "Release Charger for Better Battery life";
+                        notifyIcon.BalloonTipTitle = "Battery Charged";
+                        notifyIcon.ShowBalloonTip(3);
+                    }
+                }
+                else if (batteryPercentage <= 40)
+                {
+                    if (powerStatus.PowerLineStatus == PowerLineStatus.Offline)
+                    {
+                        notifyIcon.BalloonTipText = "Connect Charger for Better Battery life";
+                        notifyIcon.BalloonTipTitle = "Battery Finished";
+                        notifyIcon.ShowBalloonTip(3);
+                    }
+                }
             }
         }
         private void menuItem_Click(object sender, EventArgs e)
