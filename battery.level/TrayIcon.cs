@@ -61,6 +61,7 @@ namespace battery.level
                 case PowerModes.Resume:
                     logbattery();
                     File.AppendAllText(logpath, "" + Environment.NewLine);
+                    logbattery();
                     break;
             }
         }
@@ -84,7 +85,7 @@ namespace battery.level
         private void logbattery()
         {
             string Percent = Convert.ToInt32(SystemInformation.PowerStatus.BatteryLifePercent * 100).ToString();
-            File.AppendAllText(logpath, Percent + "\t" + DateTime.Now.ToShortTimeString() + "\t" + DateTime.Now.ToShortDateString() + Environment.NewLine);
+            File.AppendAllText(logpath, Percent + "\t" + DateTime.Now.ToLongTimeString() + "\t" + DateTime.Now.ToShortDateString() + Environment.NewLine);
         }
 
         private void timer_Tick(object sender, EventArgs e)
