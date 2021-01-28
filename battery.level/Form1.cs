@@ -52,7 +52,7 @@ namespace battery.level
                         a = false;
                     }
                     x = z - y;
-                    chart1.Series[j].Points.AddXY(x.TotalMinutes, text[0]);
+                    chart1.Series[j].Points.AddXY(x.TotalMinutes + x.TotalSeconds/60, text[0]);
 
                 }
             }
