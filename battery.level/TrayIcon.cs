@@ -84,8 +84,9 @@ namespace battery.level
 
         private void logbattery()
         {
-            string Percent = Convert.ToInt32(SystemInformation.PowerStatus.BatteryLifePercent * 100).ToString();
-            File.AppendAllText(logpath, Percent + "\t" + DateTime.Now.ToLongTimeString() + "\t" + DateTime.Now.ToShortDateString() + Environment.NewLine);
+            int Percent = Convert.ToInt32(SystemInformation.PowerStatus.BatteryLifePercent * 100);
+            oldPercentage = Percent;
+            File.AppendAllText(logpath, Percent.ToString() + "\t" + DateTime.Now.ToLongTimeString() + "\t" + DateTime.Now.ToShortDateString() + Environment.NewLine);
         }
 
         private void timer_Tick(object sender, EventArgs e)
@@ -95,7 +96,6 @@ namespace battery.level
             if (oldPercentage == Percent)
                 return;
 
-            oldPercentage = Percent;
             logbattery();
 
             //icon draw
