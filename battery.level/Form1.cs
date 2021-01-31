@@ -24,13 +24,13 @@ namespace battery.level
             
             string[] lines = File.ReadAllLines(TrayIcon.logpath);
             int j = 0;
-            TimeSpan x = new TimeSpan();
-            DateTime y = new DateTime();
+            TimeSpan timeSpan = new TimeSpan();
+            DateTime currentdatetimebeforetimespan = new DateTime();
             bool a = true;
 
             for (int i = 0; i < lines.Length; i++)
             {
-                if (lines[i] == "")
+                if (lines[i] == "")//new season
                 {
                     a = true;
                     j++;
@@ -44,40 +44,45 @@ namespace battery.level
                     {
                         continue;
                     }
-                    DateTime z = new DateTime();
-                    z = Convert.ToDateTime(text[1] + text[2]);
+                    DateTime currentdatetime = new DateTime();
+                    currentdatetime = Convert.ToDateTime(text[1] + text[2]);
                     if (a)
                     {
-                        y = z - x;
+                        currentdatetimebeforetimespan = currentdatetime - timeSpan;
                         a = false;
                     }
-                    x = z - y;
-                    chart1.Series[j].Points.AddXY(x.TotalMinutes + x.TotalSeconds/60, text[0]);
+                    timeSpan = currentdatetime - currentdatetimebeforetimespan;
+                    chart1.Series[j].Points.AddXY(timeSpan.TotalSeconds/60, text[0]);
 
                 }
             }
-            int final = Convert.ToInt32(x.TotalMinutes);
+
+            //to reduce chart to last 1000 min
+            int final = Convert.ToInt32(timeSpan.TotalSeconds/60);
             if (final > 1000)
             {
                 foreach (var series in chart1.Series)
                 {
                     for (int i = 0; i < series.Points.Count; i++)
                     {
-                        if(final - series.Points[i].XValue > 1000)
+                        if(series.Points[i].XValue < final - 1000)
                         {
                             series.Points.RemoveAt(i);
                             i--;
-                            
                         }
                         else
                         {
+                            //say point 4000 of 5000
+                            //make it 4000 + 1000 - 5000 = 0
+                            //say point 5000 of 5000
+                            //make it 5000 + 1000- 5000 = 1000
                             series.Points[i].XValue = series.Points[i].XValue + 1000 - final;
+
                         }
                     }
                 }
                 chart1.Update();
             }
-
         }
     }
 }
